@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal JD Generator</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <img src="icons/icon32.png" alt="Logo" style="width: 22px; height: 22px; object-fit: contain;">
+                </div>
+                <div>
+                    <h1>Internal JD</h1>
+                    <span class="sub-logo">Sourcing Strategist</span>
+                </div>
+            </div>
+            <button id="btn-settings" class="header-btn" title="Configure Prompts">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <main class="app-body">
+            
+            <!-- INPUT SCREEN -->
+            <div id="screen-input" class="screen active">
+                <form id="generator-form">
+                    <div class="form-group">
+                        <label for="input-role">Role Name <span class="label-opt">(Optional)</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-briefcase input-icon"></i>
+                            <input type="text" id="input-role" placeholder="e.g., AI Engineer">
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="input-location">Location <span class="label-opt">(Optional)</span></label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-location-dot input-icon"></i>
+                                <input type="text" id="input-location" placeholder="e.g., Amsterdam, NL">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="input-contract">Contract Duration <span class="label-opt">(Optional)</span></label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-calendar-days input-icon"></i>
+                                <input type="text" id="input-contract" placeholder="e.g., 6 months">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-raw-jd">Original JD / Requirements <span class="label-req">*</span></label>
+                        <div class="textarea-wrapper">
+                            <textarea id="input-raw-jd" rows="8" placeholder="Paste original Job Description or client-facing requirements here..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-generate" class="btn btn-primary">
+                        <span class="btn-text">Generate Internal JD</span>
+                        <i class="fa-solid fa-circle-notch fa-spin btn-loader hidden"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- RESULT SCREEN -->
+            <div id="screen-result" class="screen">
+                <div class="result-header">
+                    <h2>Generated Internal JD</h2>
+                </div>
+                
+                <div class="result-body">
+                    <textarea id="output-jd-textarea" class="output-textarea" placeholder="Generated JD output..."></textarea>
+                </div>
+                
+                <div class="result-footer">
+                    <button id="btn-copy" class="btn btn-secondary">
+                        <i class="fa-solid fa-copy"></i> Copy
+                    </button>
+                    <button id="btn-regenerate" class="btn btn-primary">
+                        <i class="fa-solid fa-rotate"></i> Regenerate
+                    </button>
+                    <button id="btn-new-jd" class="btn btn-danger">
+                        <i class="fa-solid fa-plus"></i> New JD
+                    </button>
+                </div>
+            </div>
+
+            <!-- ERROR ALERT -->
+            <div id="error-alert" class="error-alert hidden">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="error-text" id="error-message">Error message details...</div>
+                <button id="btn-close-error" class="error-close">&times;</button>
+            </div>
+
+        </main>
+
+        <!-- LOADING STATE OVERLAY -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loader-content">
+                <div class="loader-spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+                <h3>Transforming Job Description</h3>
+                <p>Calling remote Cloudflare Worker...</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <i id="toast-icon" class="fa-solid fa-circle-info"></i>
+        <span id="toast-message">Toast message...</span>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>

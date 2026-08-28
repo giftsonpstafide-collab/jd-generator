@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecruitIntel - Configuration Settings</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="popup.css">
+    <style>
+        /* Specific overrides to adapt popup.css styling to a full options page */
+        body {
+            width: 100% !important;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, rgba(0, 0, 0, 0) 40%), #050811;
+        }
+
+        .settings-card {
+            background: rgba(30, 41, 59, 0.45);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 680px;
+            padding: 30px;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.1);
+            animation: cardSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) ease-out;
+        }
+
+        @keyframes cardSlideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 18px;
+        }
+
+        .settings-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-title i {
+            color: var(--accent-primary);
+            font-size: 24px;
+        }
+
+        .settings-title h2 {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .settings-help {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .settings-help code {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #06b6d4;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .prompt-textarea {
+            width: 100%;
+            height: 380px !important;
+            padding: 16px;
+            font-family: var(--font-body);
+            font-size: 13px;
+            line-height: 1.6;
+            background-color: rgba(15, 23, 42, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: var(--text-primary);
+            resize: vertical;
+            outline: none;
+            transition: all var(--transition-fast);
+        }
+
+        .prompt-textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .settings-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 18px;
+        }
+
+        .settings-actions .btn {
+            min-width: 130px;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-card">
+        
+        <!-- HEADER -->
+        <div class="settings-header">
+            <div class="settings-title">
+                <i class="fa-solid fa-sliders"></i>
+                <h2>RecruitIntel Settings</h2>
+            </div>
+            <span class="sub-logo" style="text-align: right;">Job Format Template Config</span>
+        </div>
+
+        <!-- HELP INFO -->
+        <div class="settings-help">
+            <i class="fa-solid fa-circle-info" style="color: var(--accent-primary); margin-right: 6px;"></i>
+            The <strong>Job Format Prompt</strong> instructs the Gemini AI Engine how to map the raw job description data. Standardize headings, list spacing, or style formats here. Variables like <code>[ROLE]</code> will be interpolated by the transformation engine.
+        </div>
+
+        <!-- FORM CONTROLS -->
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="textarea-prompt" style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">Job Format Prompt Guidelines</label>
+            <textarea id="textarea-prompt" class="prompt-textarea" placeholder="Paste formatting guidelines here..."></textarea>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="settings-actions">
+            <button id="btn-reset" class="btn btn-secondary">
+                <i class="fa-solid fa-trash-arrow-up"></i> Reset Default
+            </button>
+            <button id="btn-save" class="btn btn-primary" style="width: auto;">
+                <i class="fa-solid fa-floppy-disk"></i> Save Settings
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden" style="position: fixed; bottom: 24px; right: 24px; left: auto; width: 320px;">
+        <i id="toast-icon" class="fa-solid fa-circle-info"></i>
+        <span id="toast-message">Toast message...</span>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>
